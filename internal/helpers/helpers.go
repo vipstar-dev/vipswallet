@@ -7,14 +7,14 @@
 package helpers
 
 import (
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/vipstar-dev/vipsd/wire"
+	"github.com/vipstar-dev/vipsutil"
 )
 
 // SumOutputValues sums up the list of TxOuts and returns an Amount.
-func SumOutputValues(outputs []*wire.TxOut) (totalOutput btcutil.Amount) {
+func SumOutputValues(outputs []*wire.TxOut) (totalOutput vipsutil.Amount) {
 	for _, txOut := range outputs {
-		totalOutput += btcutil.Amount(txOut.Value)
+		totalOutput += vipsutil.Amount(txOut.Value)
 	}
 	return totalOutput
 }

@@ -4,7 +4,7 @@
 
 package netparams
 
-import "github.com/btcsuite/btcd/chaincfg"
+import "github.com/vipstar-dev/vipsd/chaincfg"
 
 // Params is used to group parameters for various networks such as the main
 // network and test networks.
@@ -14,20 +14,20 @@ type Params struct {
 	RPCServerPort string
 }
 
-// MainNetParams contains parameters specific running btcwallet and
-// btcd on the main network (wire.MainNet).
+// MainNetParams contains parameters specific running vipswallet and
+// vipsd on the main network (wire.MainNet).
 var MainNetParams = Params{
 	Params:        &chaincfg.MainNetParams,
-	RPCClientPort: "8334",
-	RPCServerPort: "8332",
+	RPCClientPort: "31914",
+	RPCServerPort: "31915",
 }
 
-// TestNet3Params contains parameters specific running btcwallet and
-// btcd on the test network (version 3) (wire.TestNet3).
+// TestNet3Params contains parameters specific running vipswallet and
+// vipsd on the test network (version 3) (wire.TestNet3).
 var TestNet3Params = Params{
 	Params:        &chaincfg.TestNet3Params,
-	RPCClientPort: "18334",
-	RPCServerPort: "18332",
+	RPCClientPort: "32916",
+	RPCServerPort: "32915",
 }
 
 // SimNetParams contains parameters specific to the simulation test network

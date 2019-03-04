@@ -6,16 +6,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/gcs"
-	"github.com/btcsuite/btcutil/gcs/builder"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/vipstar-dev/vipsd/chaincfg"
+	"github.com/vipstar-dev/vipsd/chaincfg/chainhash"
+	"github.com/vipstar-dev/vipsd/rpcclient"
+	"github.com/vipstar-dev/vipsd/txscript"
+	"github.com/vipstar-dev/vipsd/wire"
+	"github.com/vipstar-dev/vipsutil"
+	"github.com/vipstar-dev/vipsutil/gcs"
+	"github.com/vipstar-dev/vipsutil/gcs/builder"
+	"github.com/vipstar-dev/vipswallet/waddrmgr"
+	"github.com/vipstar-dev/vipswallet/wtxmgr"
 	"github.com/lightninglabs/neutrino"
 )
 
@@ -317,8 +317,8 @@ func (s *NeutrinoClient) pollCFilter(hash *chainhash.Hash) (*gcs.Filter, error) 
 }
 
 // Rescan replicates the RPC client's Rescan command.
-func (s *NeutrinoClient) Rescan(startHash *chainhash.Hash, addrs []btcutil.Address,
-	outPoints map[wire.OutPoint]btcutil.Address) error {
+func (s *NeutrinoClient) Rescan(startHash *chainhash.Hash, addrs []vipsutil.Address,
+	outPoints map[wire.OutPoint]vipsutil.Address) error {
 
 	s.clientMtx.Lock()
 	defer s.clientMtx.Unlock()
@@ -406,14 +406,14 @@ func (s *NeutrinoClient) NotifyBlocks() error {
 	// start a rescan without watching any addresses.
 	if !s.scanning {
 		s.clientMtx.Unlock()
-		return s.NotifyReceived([]btcutil.Address{})
+		return s.NotifyReceived([]vipsutil.Address{})
 	}
 	s.clientMtx.Unlock()
 	return nil
 }
 
 // NotifyReceived replicates the RPC client's NotifyReceived command.
-func (s *NeutrinoClient) NotifyReceived(addrs []btcutil.Address) error {
+func (s *NeutrinoClient) NotifyReceived(addrs []vipsutil.Address) error {
 	s.clientMtx.Lock()
 
 	// If we have a rescan running, we just need to add the appropriate
@@ -468,7 +468,7 @@ func (s *NeutrinoClient) SetStartTime(startTime time.Time) {
 // onFilteredBlockConnected sends appropriate notifications to the notification
 // channel.
 func (s *NeutrinoClient) onFilteredBlockConnected(height int32,
-	header *wire.BlockHeader, relevantTxs []*btcutil.Tx) {
+	header *wire.BlockHeader, relevantTxs []*vipsutil.Tx) {
 	ntfn := FilteredBlockConnected{
 		Block: &wtxmgr.BlockMeta{
 			Block: wtxmgr.Block{

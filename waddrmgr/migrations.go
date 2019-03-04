@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcwallet/walletdb"
-	"github.com/btcsuite/btcwallet/walletdb/migration"
+	"github.com/vipstar-dev/vipsd/chaincfg"
+	"github.com/vipstar-dev/vipswallet/walletdb"
+	"github.com/vipstar-dev/vipswallet/walletdb/migration"
 )
 
 // versions is a list of the different database versions. The last entry should
@@ -132,7 +132,7 @@ func upgradeToVersion5(ns walletdb.ReadWriteBucket) error {
 			if row.addrType > adtScript {
 				return fmt.Errorf("segwit address exists in " +
 					"wallet, can't upgrade from v4 to " +
-					"v5: well, we tried  ¯\\_(ツ)_/¯")
+					"v5: well, we tried  ￣\\_(ツ)_/￣")
 			}
 			return nil
 		})

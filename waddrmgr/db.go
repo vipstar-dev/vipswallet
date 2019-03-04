@@ -12,8 +12,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/vipstar-dev/vipsd/chaincfg/chainhash"
+	"github.com/vipstar-dev/vipswallet/walletdb"
 )
 
 var (

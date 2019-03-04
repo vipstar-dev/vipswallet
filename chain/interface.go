@@ -3,25 +3,25 @@ package chain
 import (
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/vipstar-dev/vipsd/chaincfg/chainhash"
+	"github.com/vipstar-dev/vipsd/wire"
+	"github.com/vipstar-dev/vipsutil"
+	"github.com/vipstar-dev/vipswallet/waddrmgr"
+	"github.com/vipstar-dev/vipswallet/wtxmgr"
 )
 
 // BackEnds returns a list of the available back ends.
 // TODO: Refactor each into a driver and use dynamic registration.
 func BackEnds() []string {
 	return []string{
-		"bitcoind",
-		"btcd",
+		"vipstarcoind",
+		"vipsd",
 		"neutrino",
 	}
 }
 
 // Interface allows more than one backing blockchain source, such as a
-// btcd RPC chain server, or an SPV library, as long as we write a driver for
+// vipsd RPC chain server, or an SPV library, as long as we write a driver for
 // it.
 type Interface interface {
 	Start() error
@@ -34,8 +34,8 @@ type Interface interface {
 	FilterBlocks(*FilterBlocksRequest) (*FilterBlocksResponse, error)
 	BlockStamp() (*waddrmgr.BlockStamp, error)
 	SendRawTransaction(*wire.MsgTx, bool) (*chainhash.Hash, error)
-	Rescan(*chainhash.Hash, []btcutil.Address, map[wire.OutPoint]btcutil.Address) error
-	NotifyReceived([]btcutil.Address) error
+	Rescan(*chainhash.Hash, []vipsutil.Address, map[wire.OutPoint]vipsutil.Address) error
+	NotifyReceived([]vipsutil.Address) error
 	NotifyBlocks() error
 	Notifications() <-chan interface{}
 	BackEnd() string
@@ -68,9 +68,9 @@ type (
 	// is also included to monitor for spends.
 	FilterBlocksRequest struct {
 		Blocks           []wtxmgr.BlockMeta
-		ExternalAddrs    map[waddrmgr.ScopedIndex]btcutil.Address
-		InternalAddrs    map[waddrmgr.ScopedIndex]btcutil.Address
-		WatchedOutPoints map[wire.OutPoint]btcutil.Address
+		ExternalAddrs    map[waddrmgr.ScopedIndex]vipsutil.Address
+		InternalAddrs    map[waddrmgr.ScopedIndex]vipsutil.Address
+		WatchedOutPoints map[wire.OutPoint]vipsutil.Address
 	}
 
 	// FilterBlocksResponse reports the set of all internal and external
@@ -85,7 +85,7 @@ type (
 		BlockMeta          wtxmgr.BlockMeta
 		FoundExternalAddrs map[waddrmgr.KeyScope]map[uint32]struct{}
 		FoundInternalAddrs map[waddrmgr.KeyScope]map[uint32]struct{}
-		FoundOutPoints     map[wire.OutPoint]btcutil.Address
+		FoundOutPoints     map[wire.OutPoint]vipsutil.Address
 		RelevantTxns       []*wire.MsgTx
 	}
 

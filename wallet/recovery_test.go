@@ -4,7 +4,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/btcsuite/btcwallet/wallet"
+	"github.com/vipstar-dev/vipswallet/wallet"
 )
 
 // Harness holds the BranchRecoveryState being tested, the recovery window being

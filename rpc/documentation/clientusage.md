@@ -15,11 +15,11 @@ each.  In short summary, to call RPC server methods, a client must:
 
 The only exception to these steps is if the client is being written in Go.  In
 that case, the first step may be omitted by importing the bindings from
-btcwallet itself.
+vipswallet itself.
 
 The rest of this document provides short examples of how to quickly get started
 by implementing a basic client that fetches the balance of the default account
-(account 0) from a testnet3 wallet listening on `localhost:18332` in several
+(account 0) from a testnet3 wallet listening on `localhost:32915` in several
 different languages:
 
 - [Go](#go)
@@ -52,15 +52,15 @@ import (
 	"fmt"
 	"path/filepath"
 
-	pb "github.com/btcsuite/btcwallet/rpc/walletrpc"
+	pb "github.com/vipstar-dev/vipswallet/rpc/walletrpc"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"github.com/btcsuite/btcutil"
+	"github.com/vipstar-dev/vipsutil"
 )
 
-var certificateFile = filepath.Join(btcutil.AppDataDir("btcwallet", false), "rpc.cert")
+var certificateFile = filepath.Join(vipsutil.AppDataDir("vipswallet", false), "rpc.cert")
 
 func main() {
 	creds, err := credentials.NewClientTLSFromFile(certificateFile, "localhost")
@@ -68,7 +68,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	conn, err := grpc.Dial("localhost:18332", grpc.WithTransportCredentials(creds))
+	conn, err := grpc.Dial("localhost:32915", grpc.WithTransportCredentials(creds))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -86,7 +86,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("Spendable balance: ", btcutil.Amount(balanceResponse.Spendable))
+	fmt.Println("Spendable balance: ", vipsutil.Amount(balanceResponse.Spendable))
 }
 ```
 
@@ -103,9 +103,9 @@ example source code) with a source gRPC install in `/usr/local`.
 First, generate the C++ language bindings by compiling the `.proto`:
 
 ```bash
-$ protoc -I/path/to/btcwallet/rpc --cpp_out=. --grpc_out=. \
+$ protoc -I/path/to/vipswallet/rpc --cpp_out=. --grpc_out=. \
   --plugin=protoc-gen-grpc=$(which grpc_cpp_plugin) \
-  /path/to/btcwallet/rpc/api.proto
+  /path/to/vipswallet/rpc/api.proto
 ```
 
 Once the `.proto` file has been compiled, the example client can be completed.
@@ -145,7 +145,7 @@ auto read_file(std::string const& file_path) -> std::string {
 auto main() -> int {
     // Before the gRPC native library (gRPC Core) is lazily loaded and
     // initialized, an environment variable must be set so BoringSSL is
-    // configured to use ECDSA TLS certificates (required by btcwallet).
+    // configured to use ECDSA TLS certificates (required by vipswallet).
     setenv("GRPC_SSL_CIPHER_SUITES", "HIGH+ECDSA", 1);
 
     // Note: This path is operating system-dependent.  This can be created
@@ -156,14 +156,14 @@ auto main() -> int {
         if (pw == nullptr || pw->pw_dir == nullptr) {
             throw NoHomeDirectoryException{};
         }
-        return pw->pw_dir + "/.btcwallet/rpc.cert"s;
+        return pw->pw_dir + "/.vipswallet/rpc.cert"s;
     }();
 
     grpc::SslCredentialsOptions cred_options{
         .pem_root_certs = read_file(wallet_tls_cert_file),
     };
     auto creds = grpc::SslCredentials(cred_options);
-    auto channel = grpc::CreateChannel("localhost:18332", creds);
+    auto channel = grpc::CreateChannel("localhost:32916", creds);
     auto stub = walletrpc::WalletService::NewStub(channel);
 
     grpc::ClientContext context{};
@@ -216,9 +216,9 @@ generated.  The following command generates the files `Api.cs` and `ApiGrpc.cs`
 in the `Example` project directory using the `Walletrpc` namespace:
 
 ```PowerShell
-PS> & protoc.exe -I \Path\To\btcwallet\rpc --csharp_out=Example --grpc_out=Example `
+PS> & protoc.exe -I \Path\To\vipswallet\rpc --csharp_out=Example --grpc_out=Example `
     --plugin=protoc-gen-grpc=\Path\To\grpc_csharp_plugin.exe `
-    \Path\To\btcwallet\rpc\api.proto
+    \Path\To\vipswallet\rpc\api.proto
 ```
 
 Once references have been added to the project for the `Google.Protobuf` and
@@ -245,13 +245,13 @@ namespace Example
         {
             // Before the gRPC native library (gRPC Core) is lazily loaded and initialized,
             // an environment variable must be set so BoringSSL is configured to use ECDSA TLS
-            // certificates (required by btcwallet).
+            // certificates (required by vipswallet).
             Environment.SetEnvironmentVariable("GRPC_SSL_CIPHER_SUITES", "HIGH+ECDSA");
 
             var walletAppData = Portability.LocalAppData(Environment.OSVersion.Platform, "Btcwallet");
             var walletTlsCertFile = Path.Combine(walletAppData, "rpc.cert");
             var cert = await FileUtils.ReadFileAsync(walletTlsCertFile);
-            var channel = new Channel("localhost:18332", new SslCredentials(cert));
+            var channel = new Channel("localhost:32916", new SslCredentials(cert));
             try
             {
                 var c = WalletService.NewClient(channel);
@@ -342,12 +342,12 @@ the wallet's API from the `.proto`.  Instead, a call to `grpc.load`
 with the `.proto` file path dynamically loads the Protobuf descriptor
 and generates bindings for each service.  Either copy the `.proto` to
 the client project directory, or reference the file from the
-`btcwallet` project directory.
+`vipswallet` project directory.
 
 ```JavaScript
 // Before the gRPC native library (gRPC Core) is lazily loaded and
 // initialized, an environment variable must be set so BoringSSL is
-// configured to use ECDSA TLS certificates (required by btcwallet).
+// configured to use ECDSA TLS certificates (required by vipswallet).
 process.env['GRPC_SSL_CIPHER_SUITES'] = 'HIGH+ECDSA';
 
 var fs = require('fs');
@@ -357,7 +357,7 @@ var grpc = require('grpc');
 var protoDescriptor = grpc.load('./api.proto');
 var walletrpc = protoDescriptor.walletrpc;
 
-var certPath = path.join(process.env.HOME, '.btcwallet', 'rpc.cert');
+var certPath = path.join(process.env.HOME, '.vipswallet', 'rpc.cert');
 if (os.platform == 'win32') {
     certPath = path.join(process.env.LOCALAPPDATA, 'Btcwallet', 'rpc.cert');
 } else if (os.platform == 'darwin') {
@@ -367,7 +367,7 @@ if (os.platform == 'win32') {
 
 var cert = fs.readFileSync(certPath);
 var creds = grpc.credentials.createSsl(cert);
-var client = new walletrpc.WalletService('localhost:18332', creds);
+var client = new walletrpc.WalletService('localhost:32915', creds);
 
 var request = {
     account_number: 0,
@@ -394,9 +394,9 @@ Full instructions for this procedure can be found
 Generate Python stubs from the `.proto`:
 
 ```bash
-$ protoc -I /path/to/btcsuite/btcwallet/rpc --python_out=. --grpc_out=. \
+$ protoc -I /path/to/vipstar-dev/vipswallet/rpc --python_out=. --grpc_out=. \
   --plugin=protoc-gen-grpc=$(which grpc_python_plugin) \
-  /path/to/btcwallet/rpc/api.proto
+  /path/to/vipswallet/rpc/api.proto
 ```
 
 Implement the client:
@@ -413,10 +413,10 @@ timeout = 1 # seconds
 def main():
     # Before the gRPC native library (gRPC Core) is lazily loaded and
     # initialized, an environment variable must be set so BoringSSL is
-    # configured to use ECDSA TLS certificates (required by btcwallet).
+    # configured to use ECDSA TLS certificates (required by vipswallet).
     os.environ['GRPC_SSL_CIPHER_SUITES'] = 'HIGH+ECDSA'
 
-    cert_file_path = os.path.join(os.environ['HOME'], '.btcwallet', 'rpc.cert')
+    cert_file_path = os.path.join(os.environ['HOME'], '.vipswallet', 'rpc.cert')
     if platform.system() == 'Windows':
         cert_file_path = os.path.join(os.environ['LOCALAPPDATA'], "Btcwallet", "rpc.cert")
     elif platform.system() == 'Darwin':
@@ -426,7 +426,7 @@ def main():
     with open(cert_file_path, 'r') as f:
         cert = f.read()
     creds = implementations.ssl_client_credentials(cert, None, None)
-    channel = implementations.secure_channel('localhost', 18332, creds)
+    channel = implementations.secure_channel('localhost', 32916, creds)
     stub = walletrpc.beta_create_WalletService_stub(channel)
 
     request = walletrpc.BalanceRequest(account_number = 0, required_confirmations = 1)

@@ -10,13 +10,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/walletdb"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/vipstar-dev/vipsd/chaincfg/chainhash"
+	"github.com/vipstar-dev/vipsd/txscript"
+	"github.com/vipstar-dev/vipsd/wire"
+	"github.com/vipstar-dev/vipswallet/chain"
+	"github.com/vipstar-dev/vipswallet/waddrmgr"
+	"github.com/vipstar-dev/vipswallet/walletdb"
+	"github.com/vipstar-dev/vipswallet/wtxmgr"
 )
 
 const (
@@ -51,7 +51,7 @@ func (w *Wallet) handleChainNotifications() {
 		// TODO(aakselrod): There's a race conditon here, which
 		// happens when a reorg occurs between the
 		// rescanProgress notification and the last GetBlockHash
-		// call. The solution when using btcd is to make btcd
+		// call. The solution when using vipsd is to make vipsd
 		// send blockconnected notifications with each block
 		// the way Neutrino does, and get rid of the loop. The
 		// other alternative is to check the final hash and,

@@ -9,7 +9,7 @@ import (
 	"os"
 	"reflect"
 
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/vipstar-dev/vipswallet/walletdb"
 )
 
 // errSubTestFail is used to signal that a sub test returned false.

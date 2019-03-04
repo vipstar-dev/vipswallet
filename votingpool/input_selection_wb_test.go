@@ -10,16 +10,16 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/walletdb"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/vipstar-dev/vipsd/chaincfg/chainhash"
+	"github.com/vipstar-dev/vipsd/wire"
+	"github.com/vipstar-dev/vipsutil"
+	"github.com/vipstar-dev/vipswallet/walletdb"
+	"github.com/vipstar-dev/vipswallet/wtxmgr"
 )
 
 var (
 	// random small number of satoshis used as dustThreshold
-	dustThreshold btcutil.Amount = 1e4
+	dustThreshold vipsutil.Amount = 1e4
 )
 
 func TestGetEligibleInputs(t *testing.T) {

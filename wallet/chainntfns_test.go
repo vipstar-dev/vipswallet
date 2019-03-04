@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb"
+	"github.com/vipstar-dev/vipsd/chaincfg"
+	"github.com/vipstar-dev/vipsd/chaincfg/chainhash"
+	"github.com/vipstar-dev/vipsd/wire"
+	"github.com/vipstar-dev/vipswallet/waddrmgr"
+	_ "github.com/vipstar-dev/vipswallet/walletdb/bdb"
 )
 
 var (

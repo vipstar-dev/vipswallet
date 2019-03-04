@@ -5,9 +5,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/vipstar-dev/vipsd/chaincfg/chainhash"
+	"github.com/vipstar-dev/vipsd/wire"
+	"github.com/vipstar-dev/vipswallet/wtxmgr"
 )
 
 // createTx is a helper method to create random transactions that spend

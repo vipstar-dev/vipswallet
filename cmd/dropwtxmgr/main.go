@@ -10,17 +10,17 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/walletdb"
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/vipstar-dev/vipsutil"
+	"github.com/vipstar-dev/vipswallet/waddrmgr"
+	"github.com/vipstar-dev/vipswallet/walletdb"
+	_ "github.com/vipstar-dev/vipswallet/walletdb/bdb"
+	"github.com/vipstar-dev/vipswallet/wtxmgr"
 	"github.com/jessevdk/go-flags"
 )
 
 const defaultNet = "mainnet"
 
-var datadir = btcutil.AppDataDir("btcwallet", false)
+var datadir = vipsutil.AppDataDir("vipswallet", false)
 
 // Flags.
 var opts = struct {
@@ -75,7 +75,7 @@ func mainInt() int {
 	}
 
 	for !opts.Force {
-		fmt.Print("Drop all btcwallet transaction history? [y/N] ")
+		fmt.Print("Drop all vipswallet transaction history? [y/N] ")
 
 		scanner := bufio.NewScanner(bufio.NewReader(os.Stdin))
 		if !scanner.Scan() {

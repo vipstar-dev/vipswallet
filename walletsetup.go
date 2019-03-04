@@ -11,16 +11,16 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/internal/legacy/keystore"
-	"github.com/btcsuite/btcwallet/internal/prompt"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/wallet"
-	"github.com/btcsuite/btcwallet/walletdb"
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb"
+	"github.com/vipstar-dev/vipsd/btcec"
+	"github.com/vipstar-dev/vipsd/chaincfg"
+	"github.com/vipstar-dev/vipsd/wire"
+	"github.com/vipstar-dev/vipsutil"
+	"github.com/vipstar-dev/vipswallet/internal/legacy/keystore"
+	"github.com/vipstar-dev/vipswallet/internal/prompt"
+	"github.com/vipstar-dev/vipswallet/waddrmgr"
+	"github.com/vipstar-dev/vipswallet/wallet"
+	"github.com/vipstar-dev/vipswallet/walletdb"
+	_ "github.com/vipstar-dev/vipswallet/walletdb/bdb"
 )
 
 // networkDir returns the directory name of a network directory to hold wallet
@@ -60,7 +60,7 @@ func convertLegacyKeystore(legacyKeyStore *keystore.Store, w *wallet.Wallet) err
 				continue
 			}
 
-			wif, err := btcutil.NewWIF((*btcec.PrivateKey)(privKey),
+			wif, err := vipsutil.NewWIF((*btcec.PrivateKey)(privKey),
 				netParams, addr.Compressed())
 			if err != nil {
 				fmt.Printf("WARN: Failed to create wallet "+

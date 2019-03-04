@@ -8,16 +8,16 @@ package wtxmgr
 import (
 	"fmt"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/vipstar-dev/vipsd/chaincfg/chainhash"
+	"github.com/vipstar-dev/vipsutil"
+	"github.com/vipstar-dev/vipswallet/walletdb"
 )
 
 // CreditRecord contains metadata regarding a transaction credit for a known
 // transaction.  Further details may be looked up by indexing a wire.MsgTx.TxOut
 // with the Index field.
 type CreditRecord struct {
-	Amount btcutil.Amount
+	Amount vipsutil.Amount
 	Index  uint32
 	Spent  bool
 	Change bool
@@ -27,7 +27,7 @@ type CreditRecord struct {
 // transaction.  Further details may be looked up by indexing a wire.MsgTx.TxIn
 // with the Index field.
 type DebitRecord struct {
-	Amount btcutil.Amount
+	Amount vipsutil.Amount
 	Index  uint32
 }
 
